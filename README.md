@@ -47,7 +47,7 @@ It uses previously created ```CassandraConnect``` to get access to a valid cassa
 Once constructed, it can be used to get a Session object for the key space table belongs to, and ```PreparedStatement```S for ```read()```, ```insert()```, and ```delete()``` operations on the table.
 
 ```
-import javax.inject.{ Inject, Named, Singleton }
+import javax.inject.{ Inject, Singleton }
 
 import com.datastax.driver.core.Session
 import org.aj.cassandra._
@@ -55,7 +55,7 @@ import play.api.Logger
 import myapp.Config._
 
 @Singleton
-class MyTableStatements @Inject() (cassandraConnect: CassandraConnect, @Named("Simple") sql: Sql) extends Statement with Read with Insert with Delete {
+class MyTableStatements @Inject() (cassandraConnect: CassandraConnect) extends Statement with Sql with Read with Insert with Delete {
 
   val keySpace = myapp.Config.myKeySpace
   val fields = Set(
@@ -69,9 +69,9 @@ class MyTableStatements @Inject() (cassandraConnect: CassandraConnect, @Named("S
     "int_1")
   val keys = Set("uuid_1=?", "key_2=?")
   val table = "mytable"
-  val readSql = sql.select(table, fields, Some(keys))
-  val insertSql = sql.insert(table, fields)
-  val deleteSql = sql.delete(table, keys)
+  val readSql = select(table, fields, Some(keys))
+  val insertSql = insert(table, fields)
+  val deleteSql = delete(table, keys)
   val sqls: Set[String] = Set(readSql, insertSql, deleteSql)
 
   implicit val connectRetry: Int = models.utils.DbConfig.connectRetry
