@@ -9,7 +9,7 @@ Below code snippets describe library usage giving it in a context of Play applic
 A Singleton type ```CassandraConnect``` must extend Connect abstract class to handle database Session(s), and connectivity.
 Values for ```hosts```, ```port```, and ```keySpaces``` must be available at the time of Singleton construction.
 
-```
+``` Scala
 import javax.inject.{ Inject, Singleton }
 import play.api.inject.ApplicationLifecycle
 import play.api.Logger
@@ -46,7 +46,7 @@ Singleton ```MyTableStatements``` must extend ```Statement``` trait with one or 
 It uses previously created ```CassandraConnect``` to get access to a valid cassandra Session.
 Once constructed, it can be used to get a Session object for the key space table belongs to, and ```PreparedStatement```S for ```read()```, ```insert()```, and ```delete()``` operations on the table.
 
-```
+``` Scala
 import javax.inject.{ Inject, Singleton }
 
 import com.datastax.driver.core.Session
@@ -95,7 +95,7 @@ It helps in cases if database connection is lost due to network, or being tempor
 
 Here is a sample application class used to perform basic DML tasks on a table.
 
-```
+``` Scala
 import java.util.Date
 import javax.inject.Inject
 
@@ -133,7 +133,7 @@ class MyTableOps @Inject() (myTableStatements: MyTableStatements) extends Field 
 
 Read information from database using table key values. Method throws an exception if database is not available at the moment
 
-```
+``` Scala
   def read(uuid_1: UUID, key_2: String): Option[MyRecord] = {
 
     //get PreparedStatement for read
@@ -167,7 +167,7 @@ Read information from database using table key values. Method throws an exceptio
 
 Update / insert database record. Method throws an exception if database is not available at the moment
 
-```
+``` Scala
   def submit(myRecord: MyRecord): MyRecord = {
 
     myTableStatements.insert match {
@@ -224,7 +224,7 @@ Update / insert database record. Method throws an exception if database is not a
 
 Delete information from database using table key values. Method throws an exception if database is not available at the moment
 
-```
+``` Scala
   def delete(uuid_1: UUID, key_2: String): Unit = {
 
     myTableStatements.delete match {
